@@ -1,0 +1,3 @@
+R, u, r, r, d, L, L, L, r, r, r, d, d, d, l, D, R, l, L, d, l, l, U, U, d, R, R, u, r, r, u, u, u, l, l, d, R, D, r, d, d, L, 
+42
+0.2840902805328369
