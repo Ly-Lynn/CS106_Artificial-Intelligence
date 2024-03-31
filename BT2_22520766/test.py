@@ -1,12 +1,14 @@
 from level import Level
 from tqdm import tqdm
 import os
+import math
 import collections
 import numpy as np
 import heapq
 import time
 import numpy as np
 global posWalls, posGoals
+
 class PriorityQueue:
     """Define a PriorityQueue data structure that will be used"""
     def  __init__(self):
@@ -28,26 +30,6 @@ class PriorityQueue:
 
 """Load puzzles and define the rules of sokoban"""
 
-# def transferToGameState(layout):
-#     """Transfer the layout of initial puzzle"""
-#     layout = [x.replace('\n','') for x in layout]
-#     layout = [','.join(layout[i]) for i in range(len(layout))]
-#     layout = [x.split(',') for x in layout]
-#     maxColsNum = max([len(x) for x in layout])
-#     for irow in range(len(layout)):
-#         for icol in range(len(layout[irow])):
-#             if layout[irow][icol] == ' ': layout[irow][icol] = 0   # free space
-#             elif layout[irow][icol] == '#': layout[irow][icol] = 1 # wall
-#             elif layout[irow][icol] == '&': layout[irow][icol] = 2 # player
-#             elif layout[irow][icol] == 'B': layout[irow][icol] = 3 # box
-#             elif layout[irow][icol] == '.': layout[irow][icol] = 4 # goal
-#             elif layout[irow][icol] == 'X': layout[irow][icol] = 5 # box on goal
-#         colsNum = len(layout[irow])
-#         if colsNum < maxColsNum:
-#             layout[irow].extend([1 for _ in range(maxColsNum-colsNum)]) 
-
-    # print(layout)
-    # return np.array(layout)
 def transferToGameState2(layout, player_pos):
     """Transfer the layout of initial puzzle"""
     maxColsNum = max([len(x) for x in layout])
@@ -154,7 +136,6 @@ def uniformCostSearch(gameState):
     """Implement uniformCostSearch approach"""
     beginBox = PosOfBoxes(gameState)
     beginPlayer = PosOfPlayer(gameState)
-
     startState = (beginPlayer, beginBox)
     frontier = PriorityQueue()
     frontier.push([startState], 0)
@@ -170,9 +151,9 @@ def uniformCostSearch(gameState):
         if isEndState(node[-1][-1]):
             temp += node_action[1:]
             break
-            
         if node[-1] not in exploredSet:
             exploredSet.add(node[-1])
+            
             for action in legalActions(node[-1][0], node[-1][1]):
                 newPosPlayer, newPosBox = updateState(node[-1][0], node[-1][1], action)
                 if isFailed(newPosBox):
@@ -181,7 +162,7 @@ def uniformCostSearch(gameState):
                 frontier.push(node + [(newPosPlayer, newPosBox)], new_cost)
                 actions.push(node_action + [action[-1]], new_cost)
                 
-    return temp
+    return temp, len(exploredSet)
 
 
 def heuristic(posPlayer, posBox):
@@ -195,36 +176,15 @@ def heuristic(posPlayer, posBox):
         distance += (abs(sortposBox[i][0] - sortposGoals[i][0])) + (abs(sortposBox[i][1] - sortposGoals[i][1]))
     return distance
 
-def customHeuristic(posPlayer, posBox, startPos):
-    """Tie-breaking Heuristic"""
+def customHeuristic(posPlayer, posBox):
+    """Euclide distance"""
     distance = 0
     completes = set(posGoals) & set(posBox)
     sortposBox = list(set(posBox).difference(completes))
     sortposGoals = list(set(posGoals).difference(completes))
     for i in range(len(sortposBox)):
-        # Calculate Manhattan distance for position of box and its goals
-        manhattan_distance = (abs(sortposBox[i][0] - sortposGoals[i][0])) + (abs(sortposBox[i][1] - sortposGoals[i][1]))
-
-        # In case of player do not hold any box, calculate distance between player and the nearest box
-        # manhattan_distance2 = (abs(sortposBox[i][0] - posPlayer[0])) + (abs(sortposBox[i][1] - posPlayer[1]))
-        
-        # Compute cross product from current box position to goal
-            # current box to goals 
-        dx1 = sortposBox[i][0] - sortposGoals[i][0]
-        dy1 = sortposBox[i][1] - sortposGoals[i][1]
-            # current box to start pos
-        dx3 = sortposBox[i][0] - startPos[i][0]
-        dy3 = sortposBox[i][1] - startPos[i][1]
-
-        cross_product = abs((dx1 * dy3) - (dx3 * dy1))
-        
-        # Compute cross product from start box position to goal
-        # dx4 = startPos[i][0] - sortposGoals[i][0]
-        # dy4 = startPos[i][1] - sortposGoals[i][1]
-        # cross_product_start = abs((dx4 * dy2) - (dx2 * dy4)) + abs((dx4 * dy3) - (dx3 * dy4))
-        
-        # Add cross products to the distance
-        distance += manhattan_distance  + cross_product * 0.001 
+        euclide_distance = math.sqrt((sortposBox[i][0] - sortposGoals[i][0])**2 + (sortposBox[i][1] - sortposGoals[i][1])**2)
+        distance += euclide_distance
     return distance
 
 
@@ -234,7 +194,7 @@ def aStarSearch(gameState):
     beginBox = PosOfBoxes(gameState)
     beginPlayer = PosOfPlayer(gameState)
     temp = []
-    start_state = (beginPlayer, beginBox)
+    start_state = (beginPlayer, beginBox)   
     frontier = PriorityQueue()
     frontier.push([start_state], heuristic(beginPlayer, beginBox))
     exploredSet = set()
@@ -257,7 +217,7 @@ def aStarSearch(gameState):
                 new_cost = cost(node_action[1:] + [action[-1]]) + heuristic(newPosPlayer, newPosBox)
                 frontier.push(node + [(newPosPlayer, newPosBox)], new_cost)
                 actions.push(node_action + [action[-1]], new_cost)
-    return temp
+    return temp, len(exploredSet)
     # end =  time.time()
 
 def aStarSearchCustom(gameState):
@@ -268,10 +228,10 @@ def aStarSearchCustom(gameState):
     temp = []
     start_state = (beginPlayer, beginBox)
     frontier = PriorityQueue()
-    frontier.push([start_state], customHeuristic(beginPlayer, beginBox, beginBox))
+    frontier.push([start_state], customHeuristic(beginPlayer, beginBox))
     exploredSet = set()
     actions = PriorityQueue()
-    actions.push([0], customHeuristic(beginPlayer, start_state[1], beginBox))
+    actions.push([0], customHeuristic(beginPlayer, start_state[1]))
     while len(frontier.Heap) > 0:
         node = frontier.pop()
         node_action = actions.pop()
@@ -286,16 +246,16 @@ def aStarSearchCustom(gameState):
                 newPosPlayer, newPosBox = updateState(node[-1][0], node[-1][1], action)
                 if isFailed(newPosBox):
                     continue
-                new_cost = cost(node_action[1:] + [action[-1]]) + customHeuristic(newPosPlayer, newPosBox, beginBox)
-                frontier.push(node + [(newPosPlayer, newPosBox)], new_cost)
-                actions.push(node_action + [action[-1]], new_cost)
-    return temp
+                g = cost(node_action[1:] + [action[-1]])
+                h = customHeuristic(newPosPlayer, newPosBox)
+                f = g + h
+                frontier.push(node + [(newPosPlayer, newPosBox)], f)
+                actions.push(node_action + [action[-1]], f)
+    return temp, len(exploredSet)
     # end =  time.time()
 
-times=[]
-
 # for i in [16]:
-for i in range(0,16):
+for i in range(0,17):
     # if (i + 1) == 5:
     #     continue
     index_level = i + 1
@@ -306,11 +266,11 @@ for i in range(0,16):
     posGoals = PosOfGoals(game_state)
 
     time_start = time.time()
-    # result = uniformCostSearch(game_state)
-    # result = aStarSearch(game_state)
-    result = aStarSearchCustom(game_state)
+    # result, nodes = uniformCostSearch(game_state)
+    # result, nodes = aStarSearch(game_state)
+    result, nodes = aStarSearchCustom(game_state)
     time_end = time.time()
-    folder_strategy = os.path.join(r"C:\Users\thuyl\OneDrive\My documents\AI\CS106_Artificial-Intelligence\BT2_22520766\assets", f"sokobanSolver_CustomAstart")
+    folder_strategy = os.path.join(r"C:\Users\thuyl\OneDrive\My documents\AI\CS106_Artificial-Intelligence\BT2_22520766\assets", f"sokobanSolver_AstarCus")
     if not os.path.exists(folder_strategy):
         os.mkdir(folder_strategy)
     output_file = os.path.join(folder_strategy, f"level{index_level}Solver.txt")
@@ -319,6 +279,5 @@ for i in range(0,16):
             solver_file.write('%s, ' % listitem)
         solver_file.write(f'\n{len(result)}')
         solver_file.write(f"\n{time_end - time_start}")
-        times.append(time_end - time_start)
-print(times, end='\n')
+        solver_file.write(f"\n{nodes}")
     # print(str([1,2]))

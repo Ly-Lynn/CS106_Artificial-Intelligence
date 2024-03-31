@@ -1,3 +1,0 @@
-d, r, r, d, r, r, u, L, L, u, l, l, d, R, u, r, D, u, u, r, D, D, r, d, d, l, l, U, U, r, r, d, L, 
-33
-0.1990358829498291

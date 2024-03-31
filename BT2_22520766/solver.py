@@ -1,5 +1,6 @@
 import sys
 import collections
+import math
 import numpy as np
 import heapq
 import time
@@ -144,44 +145,6 @@ def isFailed(posBox):
 
 """Implement all approcahes"""
 
-def depthFirstSearch(gameState):
-    """Implement depthFirstSearch approach"""
-    beginBox = PosOfBoxes(gameState)
-    beginPlayer = PosOfPlayer(gameState)
-
-    startState = (beginPlayer, beginBox)
-    frontier = collections.deque([[startState]])
-    exploredSet = set()
-    actions = [[0]] 
-    temp = []
-    while frontier:
-        node = frontier.pop()
-        node_action = actions.pop()
-        if isEndState(node[-1][-1]):
-            temp += node_action[1:]
-            break
-        if node[-1] not in exploredSet:
-            exploredSet.add(node[-1])
-            for action in legalActions(node[-1][0], node[-1][1]):
-                newPosPlayer, newPosBox = updateState(node[-1][0], node[-1][1], action)
-                if isFailed(newPosBox):
-                    continue
-                frontier.append(node + [(newPosPlayer, newPosBox)])
-                actions.append(node_action + [action[-1]])
-    return temp
-
-def breadthFirstSearch(gameState):
-    """Implement breadthFirstSearch approach"""
-    beginBox = PosOfBoxes(gameState)
-    beginPlayer = PosOfPlayer(gameState)
-
-    startState = (beginPlayer, beginBox)
-    frontier = collections.deque([[startState]])
-    exploredSet = set()
-    actions = collections.deque([[0]])
-    temp = []
-    ### CODING FROM HERE ###
-
 def cost(actions):
     """A cost function"""
     return len([x for x in actions if x.islower()])
@@ -190,15 +153,45 @@ def uniformCostSearch(gameState):
     """Implement uniformCostSearch approach"""
     beginBox = PosOfBoxes(gameState)
     beginPlayer = PosOfPlayer(gameState)
-
+    # Start state
     startState = (beginPlayer, beginBox)
+    # Priority queue store states
     frontier = PriorityQueue()
     frontier.push([startState], 0)
+    # Set store visited nodes
     exploredSet = set()
+    # Priority queue stores actions
     actions = PriorityQueue()
     actions.push([0], 0)
-    temp = []
-    ### CODING FROM HERE ###
+    temp = [] # solution
+    while frontier:
+        # Get the next node (state) from the frontier
+        node = frontier.pop()
+        # Get the actions taken to reach this node along with their cost
+        node_action = actions.pop()
+        # Check if this node represents an end state
+        if isEndState(node[-1][-1]):
+            # If it's an end state => solution => add the actions taken to reach here to temp and return the solution
+            temp += node_action[1:]
+            break
+        # If the node is not an end state and it's not explored yet
+        if node[-1] not in exploredSet:
+            # Mark the node as explored
+            exploredSet.add(node[-1])
+            # Iterate over legal actions applicable to the current state
+            for action in legalActions(node[-1][0], node[-1][1]):
+                # Calculate new positions for player and box based on the action
+                newPosPlayer, newPosBox = updateState(node[-1][0], node[-1][1], action)
+                # Check if the box movement leads to a failed state => skip
+                if isFailed(newPosBox):
+                    continue  
+                # Calculate the cost of the new state
+                new_cost = cost(node_action[1:] + [action[-1]])
+                # Add the new state to the frontier along with its cost
+                frontier.push(node + [(newPosPlayer, newPosBox)], new_cost)
+                # Add the actions taken to reach the new state along with their cost to the actions priority queue
+                actions.push(node_action + [action[-1]], new_cost)
+    return temp, len(exploredSet)
 
 def heuristic(posPlayer, posBox):
     # print(posPlayer, posBox)
@@ -208,7 +201,20 @@ def heuristic(posPlayer, posBox):
     sortposBox = list(set(posBox).difference(completes))
     sortposGoals = list(set(posGoals).difference(completes))
     for i in range(len(sortposBox)):
+        # calculate Manhattan distance
         distance += (abs(sortposBox[i][0] - sortposGoals[i][0])) + (abs(sortposBox[i][1] - sortposGoals[i][1]))
+    return distance
+
+def customHeuristic(posPlayer, posBox):
+    """Euclide distance"""
+    distance = 0
+    completes = set(posGoals) & set(posBox)
+    sortposBox = list(set(posBox).difference(completes))
+    sortposGoals = list(set(posGoals).difference(completes))
+    for i in range(len(sortposBox)):
+        # Calculate Euclide distance
+        euclide_distance = math.sqrt((sortposBox[i][0] - sortposGoals[i][0])**2 + (sortposBox[i][1] - sortposGoals[i][1])**2)
+        distance += euclide_distance
     return distance
 
 def aStarSearch(gameState):
@@ -216,25 +222,93 @@ def aStarSearch(gameState):
     # start =  time.time()
     beginBox = PosOfBoxes(gameState)
     beginPlayer = PosOfPlayer(gameState)
-    temp = []
-    start_state = (beginPlayer, beginBox)
-    frontier = PriorityQueue()
+    temp = [] # save solution
+    # Start state
+    start_state = (beginPlayer, beginBox)   
+    # Priority queue data structure 
+    
+    frontier = PriorityQueue() # store states
     frontier.push([start_state], heuristic(beginPlayer, beginBox))
     exploredSet = set()
-    actions = PriorityQueue()
+    actions = PriorityQueue() # store actions
     actions.push([0], heuristic(beginPlayer, start_state[1]))
     while len(frontier.Heap) > 0:
+        # Get the next node (state) from the frontier
         node = frontier.pop()
+        # Get the actions taken to reach this node along with their cost
         node_action = actions.pop()
         if isEndState(node[-1][-1]):
+            # If it's an end state => solution => add the actions taken to reach here to temp and return the solution
             temp += node_action[1:]
             break
-
-        ### CONTINUE YOUR CODE FROM HERE
-
+        # If the node is not an end state and it's not explored yet
+        if node[-1] not in exploredSet:
+            # Mark the node as explored
+            exploredSet.add(node[-1])
+            # Iterate over legal actions applicable to the current state
+            for action in legalActions(node[-1][0], node[-1][1]):
+                # Calculate new positions for player and box based on the action
+                newPosPlayer, newPosBox = updateState(node[-1][0], node[-1][1], action)
+                # Check if the box movement leads to a failed state => skip
+                if isFailed(newPosBox):
+                    continue
+                # Calculate f value
+                # each node attach with its f value = g + h
+                    # g <- cost value
+                    # h <- heuristic value
+                g = cost(node_action[1:] + [action[-1]]) 
+                h = heuristic(newPosPlayer, newPosBox)
+                f = g + h
+                frontier.push(node + [(newPosPlayer, newPosBox)], f)
+                actions.push(node_action + [action[-1]], f)
+    return temp, len(exploredSet)
     # end =  time.time()
 
-    return temp
+def aStarSearchCustom(gameState):
+    """Implement custom aStarSearch approach"""
+    # start =  time.time()
+    beginBox = PosOfBoxes(gameState)
+    beginPlayer = PosOfPlayer(gameState)
+    temp = [] # save solution
+    # Start state
+    start_state = (beginPlayer, beginBox)   
+    # Priority queue data structure 
+    
+    frontier = PriorityQueue() # store states
+    frontier.push([start_state], heuristic(beginPlayer, beginBox))
+    exploredSet = set()
+    actions = PriorityQueue() # store actions
+    actions.push([0], heuristic(beginPlayer, start_state[1]))
+    while len(frontier.Heap) > 0:
+        # Get the next node (state) from the frontier
+        node = frontier.pop()
+        # Get the actions taken to reach this node along with their cost
+        node_action = actions.pop()
+        if isEndState(node[-1][-1]):
+            # If it's an end state => solution => add the actions taken to reach here to temp and return the solution
+            temp += node_action[1:]
+            break
+        # If the node is not an end state and it's not explored yet
+        if node[-1] not in exploredSet:
+            # Mark the node as explored
+            exploredSet.add(node[-1])
+            # Iterate over legal actions applicable to the current state
+            for action in legalActions(node[-1][0], node[-1][1]):
+                # Calculate new positions for player and box based on the action
+                newPosPlayer, newPosBox = updateState(node[-1][0], node[-1][1], action)
+                # Check if the box movement leads to a failed state => skip
+                if isFailed(newPosBox):
+                    continue
+                # Calculate f value
+                # each node attach with its f value = g + h
+                    # g <- cost value
+                    # h <- heuristic value
+                g = cost(node_action[1:] + [action[-1]]) 
+                h = customHeuristic(newPosPlayer, newPosBox)
+                f = g + h
+                frontier.push(node + [(newPosPlayer, newPosBox)], f)
+                actions.push(node_action + [action[-1]], f)
+    return temp, len(exploredSet)
 
 """Read command"""
 def readCommand(argv):
@@ -260,18 +334,16 @@ def get_move(layout, player_pos, method):
     gameState = transferToGameState2(layout, player_pos)
     posWalls = PosOfWalls(gameState)
     posGoals = PosOfGoals(gameState)
-    
-    if method == 'dfs':
-        result = depthFirstSearch(gameState)
-    elif method == 'bfs':        
-        result = breadthFirstSearch(gameState)
-    elif method == 'ucs':
-        result = uniformCostSearch(gameState)
+    if method == 'ucs':
+        result, nodes = uniformCostSearch(gameState)
     elif method == 'astar':
-        result = aStarSearch(gameState)        
+        result, nodes = aStarSearch(gameState)     
+    elif method == 'astarcus':
+        result, nodes = aStarSearchCustom(gameState)     
     else:
         raise ValueError('Invalid method.')
     time_end=time.time()
     print('Runtime of %s: %.2f second.' %(method, time_end-time_start))
     print(result)
+    print(f'Number of nodes expanded: {nodes}')
     return result
