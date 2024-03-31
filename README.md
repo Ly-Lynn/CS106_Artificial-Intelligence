@@ -11,7 +11,9 @@ To change algorithm for auto run, go into *game.py* and change corresponding alg
 ![get_move()](/BT2_22520766/assets/images/readme1.png)
 
 # Introduction
-Assignment 2 evaluates knowledge about 'Informed Algorithms,' including A* Search and Custom A* Search.
+- Assignment 1 evaluates knowledge about 'Uninformed Algorithms,' including Depth First Search, Breadth First Search, and Uniform Cost Search.
+
+- Assignment 2 evaluates knowledge about 'Informed Algorithms,' including A* Search and Custom A* Search.
 # Files
 The implementations of the three algorithms can be found in the solver.py file.
 
