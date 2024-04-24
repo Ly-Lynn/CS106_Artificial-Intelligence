@@ -1,0 +1,19 @@
+scripts:
+
+1. python .\pacman.py -l minimaxClassic -p MinimaxAgent -a depth=3 --frameTime 0 -s 22520766
+2. python .\pacman.py -l capsuleClassic -p MinimaxAgent -a depth=3 --frameTime 0 -s 22520767
+3. python .\pacman.py -l mediumClassic -p MinimaxAgent -a depth=3 --frameTime 0 -s 22520768
+4. python .\pacman.py -l powerClassic -p MinimaxAgent -a depth=3 --frameTime 0 -s 22520769
+5. python .\pacman.py -l trickyClassic -p MinimaxAgent -a depth=3 --frameTime 0 -s 22520770
+
+1. python .\pacman.py -l minimaxClassic -p AlphaBetaAgent -a depth=3 --frameTime 0 -s 22520766
+2. python .\pacman.py -l capsuleClassic -p AlphaBetaAgent -a depth=3 --frameTime 0 -s 22520767
+3. python .\pacman.py -l mediumClassic -p AlphaBetaAgent -a depth=3 --frameTime 0 -s 22520768
+4. python .\pacman.py -l powerClassic -p AlphaBetaAgent -a depth=3 --frameTime 0 -s 22520769
+5. python .\pacman.py -l trickyClassic -p AlphaBetaAgent -a depth=3 --frameTime 0 -s 22520770
+
+1. python .\pacman.py -l minimaxClassic -p ExpectimaxAgent -a depth=3 --frameTime 0 -s 22520766
+2. python .\pacman.py -l capsuleClassic -p ExpectimaxAgent -a depth=3 --frameTime 0 -s 22520767
+3. python .\pacman.py -l mediumClassic -p ExpectimaxAgent -a depth=3 --frameTime 0 -s 22520768
+4. python .\pacman.py -l powerClassic -p ExpectimaxAgent -a depth=3 --frameTime 0 -s 22520769
+5. python .\pacman.py -l trickyClassic -p ExpectimaxAgent -a depth=3 --frameTime 0 -s 22520770
