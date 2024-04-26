@@ -1,0 +1,285 @@
+
+---------------- Map: minimaxClassic-------------------------
+
+       ------- seed: 22520766
+
+Pacman died! Score: -492
+
+Time: 1.9020097255706787 s
+
+Average Score: -492.0
+Scores:        -492.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520767
+
+Pacman emerges victorious! Score: 512
+
+Time: 1.525960922241211 s
+
+Average Score: 512.0
+Scores:        512.0
+Win Rate:      1/1 (1.00)
+Record:        Win
+
+       ------- seed: 22520768
+
+Pacman died! Score: -495
+
+Time: 1.3672993183135986 s
+
+Average Score: -495.0
+Scores:        -495.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520769
+
+Pacman emerges victorious! Score: 513
+
+Time: 1.460618495941162 s
+
+Average Score: 513.0
+Scores:        513.0
+Win Rate:      1/1 (1.00)
+Record:        Win
+
+       ------- seed: 22520770
+
+Pacman emerges victorious! Score: 513
+
+Time: 1.4295883178710938 s
+
+Average Score: 513.0
+Scores:        513.0
+Win Rate:      1/1 (1.00)
+Record:        Win
+
+---------------- Map: mediumClassic-------------------------
+
+       ------- seed: 22520766
+
+Pacman died! Score: -474
+
+Time: 81.05718922615051 s
+
+Average Score: -474.0
+Scores:        -474.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520767
+
+Pacman died! Score: 189
+
+Time: 25.015379190444946 s
+
+Average Score: 189.0
+Scores:        189.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520768
+
+Pacman emerges victorious! Score: 1664
+
+Time: 39.89944052696228 s
+
+Average Score: 1664.0
+Scores:        1664.0
+Win Rate:      1/1 (1.00)
+Record:        Win
+
+       ------- seed: 22520769
+
+Pacman emerges victorious! Score: 1422
+
+Time: 37.62276840209961 s
+
+Average Score: 1422.0
+Scores:        1422.0
+Win Rate:      1/1 (1.00)
+Record:        Win
+
+       ------- seed: 22520770
+
+Pacman died! Score: -1472
+
+Time: 122.78198313713074 s
+
+Average Score: -1472.0
+Scores:        -1472.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+---------------- Map: capsuleClassic-------------------------
+
+       ------- seed: 22520766
+
+Pacman died! Score: -692
+
+Time: 27.426656484603882 s
+
+Average Score: -692.0
+Scores:        -692.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520767
+
+Pacman died! Score: -562
+
+Time: 11.82399582862854 s
+
+Average Score: -562.0
+Scores:        -562.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520768
+
+Pacman died! Score: -443
+
+Time: 4.173503637313843 s
+
+Average Score: -443.0
+Scores:        -443.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520769
+
+Pacman died! Score: -444
+
+Time: 4.1308839321136475 s
+
+Average Score: -444.0
+Scores:        -444.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520770
+
+Pacman died! Score: -469
+
+Time: 5.576727390289307 s
+
+Average Score: -469.0
+Scores:        -469.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+---------------- Map: contestClassic-------------------------
+
+       ------- seed: 22520766
+
+Pacman died! Score: 221
+
+Time: 16.31533718109131 s
+
+Average Score: 221.0
+Scores:        221.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520767
+
+Pacman died! Score: -55
+
+Time: 11.184776067733765 s
+
+Average Score: -55.0
+Scores:        -55.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520768
+
+Pacman died! Score: 851
+
+Time: 26.130357027053833 s
+
+Average Score: 851.0
+Scores:        851.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520769
+
+Pacman emerges victorious! Score: 1483
+
+Time: 31.84222388267517 s
+
+Average Score: 1483.0
+Scores:        1483.0
+Win Rate:      1/1 (1.00)
+Record:        Win
+
+       ------- seed: 22520770
+
+Pacman died! Score: -33
+
+Time: 15.132870197296143 s
+
+Average Score: -33.0
+Scores:        -33.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+---------------- Map: originalClassic-------------------------
+
+       ------- seed: 22520766
+
+Pacman died! Score: 772
+
+Time: 224.99298620224 s
+
+Average Score: 772.0
+Scores:        772.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520767
+
+Pacman died! Score: -637
+
+Time: 370.81506633758545 s
+
+Average Score: -637.0
+Scores:        -637.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520768
+
+Pacman died! Score: -11
+
+Time: 75.0457694530487 s
+
+Average Score: -11.0
+Scores:        -11.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520769
+
+Pacman died! Score: -156
+
+Time: 116.10973978042603 s
+
+Average Score: -156.0
+Scores:        -156.0
+Win Rate:      0/1 (0.00)
+Record:        Loss
+
+       ------- seed: 22520770
+
+Pacman died! Score: 166
+
+Time: 237.1112027168274 s
+
+Average Score: 166.0
+Scores:        166.0
+Win Rate:      0/1 (0.00)
+Record:        Loss

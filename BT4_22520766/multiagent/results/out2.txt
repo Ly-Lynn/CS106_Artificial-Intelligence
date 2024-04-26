@@ -1,5 +1,0 @@
-Pacman died! Score: -562
-Average Score: -562.0
-Scores:        -562.0
-Win Rate:      0/1 (0.00)
-Record:        Loss

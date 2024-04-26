@@ -602,6 +602,7 @@ class Game:
         sys.stderr = OLD_STDERR
 
     def run(self):
+        start = time.time()
         """
         Main control loop for game play.
         """
@@ -776,3 +777,5 @@ class Game:
                     self.unmute()
                     return
         self.display.finish()
+        end = time.time()
+        print(f"\nTime: {end - start} s\n")

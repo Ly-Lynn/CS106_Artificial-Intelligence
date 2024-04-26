@@ -1,0 +1,21 @@
+argslists = ["python pacman.py -p MinimaxAgent", "python pacman.py -p AlphaBetaAgent", "python pacman.py -p ExpectimaxAgent"]
+    layouts = ["minimaxClassic", "mediumClassic", "capsuleClassic", "contestClassic", "powerClassic"]
+    mssv = 22520766
+
+    for command in argslists:
+        split_command = command.split()[2:]  # Bỏ qua "python pacman.py"
+        args,p = shlex.split(' '.join(split_command))
+        print(args)
+        # p = args['-p']
+        output_file = f"{p}_evalfc.txt"
+
+        with open(output_file, 'w') as file:
+            sys.stdout = file
+            
+            for layout_file in tqdm(layouts):
+                args["layout"] = layout.getLayout(layout_file)
+                print(f"---------------- Map: {layout_file}-------------------------")
+                for i in range(mssv, mssv + 5):
+                    print(f"\n       ------- seed: {i}\n")
+                    random.seed(i)
+                    runGames(**args)

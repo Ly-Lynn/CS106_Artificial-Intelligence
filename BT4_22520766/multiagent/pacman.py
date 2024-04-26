@@ -52,7 +52,8 @@ import types
 import time
 import random
 import os
-
+from tqdm import tqdm
+import shlex
 ###################################################
 # YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
 ###################################################
@@ -624,7 +625,7 @@ def readCommand(argv):
         replayGame(**recorded)
         sys.exit(0)
 
-    return args
+    return args, options.pacman
 
 
 def loadAgent(pacman, nographics):
@@ -734,9 +735,40 @@ if __name__ == '__main__':
 
     > python pacman.py --help
     """
-    args = readCommand(sys.argv[1:])  # Get game components based on input
+    # normal experiment
+    args, p = readCommand(sys.argv[1:])  # Get game components based on input
     runGames(**args)
-
-    # import cProfile
-    # cProfile.run("runGames( **args )")
     pass
+
+    # # automatic experiment
+    # argsList = ["python pacman.py -p MinimaxAgent", "python pacman.py -p AlphaBetaAgent", "python pacman.py -p ExpectimaxAgent"]
+    # layouts = ["minimaxClassic", "capsuleClassic"
+    #            ,"originalClassic", "contestClassic", "mediumClassic"
+    #            ]
+    # better_argsList = ["python pacman.py -p MinimaxAgent -a evalFn=betterEvaluationFunction", 
+    #                     "python pacman.py -p AlphaBetaAgent -a evalFn=betterEvaluationFunction", 
+    #                     "python pacman.py -p ExpectimaxAgent -a evalFn=betterEvaluationFunction"]
+    # mssv = 22520766
+
+    # # change command list argList or better_argsList
+    # for command in argsList:
+    #     split = command.split()[2:]  # pass "python pacman.py"
+    #     args = shlex.split(' '.join(split))
+
+    #     # depends on the argList or better_argsList
+    #     # output_file = f"{p}_betterEvalfc.txt"
+    #     output_file = f"{p}_evalfc.txt"
+
+    #     print(args)
+    #     args, p = readCommand(args)
+    #     with open(output_file, 'w') as file:
+    #         sys.stdout = file
+            
+    #         for layout_file in tqdm(layouts):
+    #             args["layout"] = layout.getLayout(layout_file)
+    #             print(f"\n---------------- Map: {layout_file}-------------------------")
+    #             for i in range(mssv, mssv + 5):
+    #                 print(f"\n       ------- seed: {i}\n")
+    #                 random.seed(i)
+    #                 runGames(**args)
+    #         sys.stdout = sys.__stdout__
