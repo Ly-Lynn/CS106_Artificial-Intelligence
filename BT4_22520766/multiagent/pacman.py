@@ -551,7 +551,7 @@ def readCommand(argv):
     parser.add_option('-x', '--numTraining', dest='numTraining', type='int',
                       help=default('How many episodes are training (suppresses output)'), default=0)
     parser.add_option('--frameTime', dest='frameTime', type='float',
-                      help=default('Time to delay between frames; <0 means keyboard'), default=0.1)
+                      help=default('Time to delay between frames; <0 means keyboard'), default=0)
     parser.add_option('-c', '--catchExceptions', action='store_true', dest='catchExceptions',
                       help='Turns on exception handling and timeouts during games', default=False)
     parser.add_option('--timeout', dest='timeout', type='int',
@@ -735,40 +735,43 @@ if __name__ == '__main__':
 
     > python pacman.py --help
     """
-    # normal experiment
-    args, p = readCommand(sys.argv[1:])  # Get game components based on input
-    runGames(**args)
-    pass
+    # # normal experiment
+    # args, p = readCommand(sys.argv[1:])  # Get game components based on input
+    # runGames(**args)
+    # pass
 
-    # # automatic experiment
+    # automatic experiment
     # argsList = ["python pacman.py -p MinimaxAgent", "python pacman.py -p AlphaBetaAgent", "python pacman.py -p ExpectimaxAgent"]
-    # layouts = ["minimaxClassic", "capsuleClassic"
-    #            ,"originalClassic", "contestClassic", "mediumClassic"
-    #            ]
-    # better_argsList = ["python pacman.py -p MinimaxAgent -a evalFn=betterEvaluationFunction", 
-    #                     "python pacman.py -p AlphaBetaAgent -a evalFn=betterEvaluationFunction", 
-    #                     "python pacman.py -p ExpectimaxAgent -a evalFn=betterEvaluationFunction"]
-    # mssv = 22520766
+    layouts = ["minimaxClassic", 
+               "capsuleClassic",
+               "originalClassic", 
+               "contestClassic", 
+               "mediumClassic"
+               ]
+    argsList = [
+                "python pacman.py -p MinimaxAgent -a evalFn=betterEvaluationFunction2", 
+                "python pacman.py -p AlphaBetaAgent -a evalFn=betterEvaluationFunction2", 
+                "python pacman.py -p ExpectimaxAgent -a evalFn=betterEvaluationFunction2"
+                ]
+    mssv = 22520766
 
-    # # change command list argList or better_argsList
-    # for command in argsList:
-    #     split = command.split()[2:]  # pass "python pacman.py"
-    #     args = shlex.split(' '.join(split))
-
-    #     # depends on the argList or better_argsList
-    #     # output_file = f"{p}_betterEvalfc.txt"
-    #     output_file = f"{p}_evalfc.txt"
-
-    #     print(args)
-    #     args, p = readCommand(args)
-    #     with open(output_file, 'w') as file:
-    #         sys.stdout = file
+    # change command list argList or better_argsList
+    for command in argsList:
+        split = command.split()[2:]  # pass "python pacman.py"
+        args = shlex.split(' '.join(split))
+        print(args)
+        args, p = readCommand(args)
+        # depends on the argList or better_argsList
+        output_file = f"{p}_betterEvalfc.txt"
+        # output_file = f"{p}_evalfc.txt"
+        with open(output_file, 'w') as file:
+            sys.stdout = file
             
-    #         for layout_file in tqdm(layouts):
-    #             args["layout"] = layout.getLayout(layout_file)
-    #             print(f"\n---------------- Map: {layout_file}-------------------------")
-    #             for i in range(mssv, mssv + 5):
-    #                 print(f"\n       ------- seed: {i}\n")
-    #                 random.seed(i)
-    #                 runGames(**args)
-    #         sys.stdout = sys.__stdout__
+            for layout_file in tqdm(layouts):
+                args["layout"] = layout.getLayout(layout_file)
+                print(f"\n---------------- Map: {layout_file}-------------------------")
+                for i in range(mssv, mssv + 5):
+                    print(f"\n       ------- seed: {i}\n")
+                    random.seed(i)
+                    runGames(**args)
+            sys.stdout = sys.__stdout__

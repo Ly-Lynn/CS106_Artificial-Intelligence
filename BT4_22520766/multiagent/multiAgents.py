@@ -368,7 +368,47 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         action = expectimax(gameState)
         return action
 
-def betterEvaluationFunction(currentGameState):
+
+def betterEvaluationFunction1(currentGameState):
+    """
+    Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
+    evaluation function (question 5).
+
+    DESCRIPTION: <write something here so we know what you did>
+    """
+    "*** YOUR CODE HERE ***"
+    #util.raiseNotDefined()
+    newPos = currentGameState.getPacmanPosition()
+    newFood = currentGameState.getFood()
+    newGhostStates = currentGameState.getGhostStates()
+    newCapsules = currentGameState.getCapsules()
+    newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
+
+    closestGhost = min([manhattanDistance(newPos, ghost.getPosition()) for ghost in newGhostStates])
+    if newCapsules:
+        closestCapsule = min([manhattanDistance(newPos, caps) for caps in newCapsules])
+    else:
+        closestCapsule = 0
+
+    if closestCapsule:
+        closest_capsule = -3 / closestCapsule
+    else:
+        closest_capsule = 100
+
+    if closestGhost:
+        ghost_distance = -2 / closestGhost
+    else:
+        ghost_distance = -500
+
+    foodList = newFood.asList()
+    if foodList:
+        closestFood = min([manhattanDistance(newPos, food) for food in foodList])
+    else:
+        closestFood = 0
+
+    return -2 * closestFood + ghost_distance - 10 * len(foodList) + closest_capsule
+
+def betterEvaluationFunction2(currentGameState):
     """
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
     evaluation function (question 5).
@@ -386,6 +426,7 @@ def betterEvaluationFunction(currentGameState):
     closestGhostDis = float("inf")
     closestFoodDis = float("inf")
     closestCapDis  = float("inf")
+
     for ghost in newGhostStates:
         dis = manhattanDistance(newPos, ghost.getPosition())
         if closestGhostDis > dis:
@@ -394,12 +435,10 @@ def betterEvaluationFunction(currentGameState):
             closestGhostPos = ghost.getPosition()
 
     for food in foodList:
-        dis = manhattanDistance(newPos, ghost.getPosition())
+        dis = manhattanDistance(newPos, food)
         if dis < closestFoodDis:
             closestFoodDis = dis
             closestFoodPos = food
-    
-    
         
     if newCapsules:
         for caps in newCapsules:
@@ -417,29 +456,26 @@ def betterEvaluationFunction(currentGameState):
         closest_capsule = 100
     
     if closestGhost.scaredTimer > 0:
-        ghost_distance=0
-        leftFood=10
-        closestFoodDis = -2 / closestFoodDis
+        # print(f"scared time closest-dis: {closestGhost.scaredTimer}, {closestGhostDis} ")
+        ghost_distance =  closestGhostDis #càng gần scared ghost điểm càng cao
+        ghost_distance *= (closestGhost.scaredTimer/10)  # số điểm biến thiên theo thời gian scared của ghost
+        foodScores = 10 / closestFoodDis
     else:
         if closestGhostDis:
             ghost_distance = -2 / closestGhostDis
         else:
             ghost_distance = -500
-        foodghostDis = manhattanDistance(closestGhostPos, closestFoodPos)
-        if foodghostDis:
-            closestFoodDis = -1 / foodghostDis # khoang cach giua food gan nhat và ghost gần nhất càng xa nhau thì càng ưu tiên ăn food
-            leftFood = -1
+        if closestFoodDis:
+            foodScores = 3 / closestFoodDis # khoang cach giua food gan nhat và ghost gần nhất càng xa nhau thì càng ưu tiên ăn food
         else: # ngược lại thì ưu tiên né ghost và move to another food
-            closestFoodDis=0
-            ghost_distance *=-2
-            leftFood = -5
+            foodScores= 0
+
     
-    score =  closestFoodDis + ghost_distance + leftFood * len(foodList) + closest_capsule
-    # If there are scared ghosts, add their scared time to the score
-    print(newScaredTimes, score, closest_capsule, sep=" ")
+    score =  foodScores + ghost_distance -10  * len(foodList) + closest_capsule
+
+    # print(newScaredTimes, score, sep=" ")
     # return -2 * closestFood + ghost_distance - 10 * len(foodList) + closest_capsule
     # print(score)
     return score
-
 # Abbreviation
-better = betterEvaluationFunction
+# better = betterEvaluationFunction1
