@@ -741,6 +741,7 @@ if __name__ == '__main__':
     # pass
 
     # automatic experiment
+    #          -------------- Li Lynn đáng yêu xinh đẹp -----------------
     # argsList = ["python pacman.py -p MinimaxAgent", "python pacman.py -p AlphaBetaAgent", "python pacman.py -p ExpectimaxAgent"]
     layouts = ["minimaxClassic", 
                "capsuleClassic",
