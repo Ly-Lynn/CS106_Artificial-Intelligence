@@ -158,10 +158,10 @@ class MinimaxAgent(MultiAgentSearchAgent):
         #util.raiseNotDefined()
         def minimax(state):
             bestValue, bestAction = None, None
-            # print(state.getLegalActions(0))
+            print(state.getLegalActions(0))
             value = []
             for action in state.getLegalActions(0):
-                #value = max(value,minValue(state.generateSuccessor(0, action), 1, 1))
+                value = max(value,minValue(state.generateSuccessor(0, action), 1, 1))
                 succ  = minValue(state.generateSuccessor(0, action), 1, 1)
                 value.append(succ)
                 if bestValue is None:
@@ -263,8 +263,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             beta = float('inf')
 
             for action in state.getLegalActions(0):
-                #value = max(value,minValue(state.generateSuccessor(0, action), 1, 1))
-                succ  = minValue(state.generateSuccessor(0, action), 1, 1, alpha, beta) #ghosts' turn in depth 1 of game tree
+                value = max(value,minValue(state.generateSuccessor(0, action), 1, 1))
+                succ  = minValue(state.generateSuccessor(0, action), 1, 1, alpha, beta) 
                 value.append(succ)
                 if bestValue is None:
                     bestValue = succ
@@ -277,11 +277,11 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             return bestAction
 
         def minValue(state, agentIdx, depth, alpha, beta):
-            if agentIdx == state.getNumAgents(): # all ghosts states detected
-                return maxValue(state, 0, depth + 1, alpha, beta) # increase the depth of game tree => pacman's turn
+            if agentIdx == state.getNumAgents(): 
+                return maxValue(state, 0, depth + 1, alpha, beta) 
             value = None
             for action in state.getLegalActions(agentIdx):
-                succ = minValue(state.generateSuccessor(agentIdx, action), agentIdx + 1, depth, alpha, beta) #another ghosts' turn 
+                succ = minValue(state.generateSuccessor(agentIdx, action), agentIdx + 1, depth, alpha, beta)
                 if value is None:
                     value = succ
                 else:
@@ -412,8 +412,6 @@ def betterEvaluationFunction2(currentGameState):
     """
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
     evaluation function (question 5).
-
-    DESCRIPTION: <write something here so we know what you did>
     """
     "*** YOUR CODE HERE ***"
     #util.raiseNotDefined()
@@ -432,24 +430,20 @@ def betterEvaluationFunction2(currentGameState):
         if closestGhostDis > dis:
             closestGhost = ghost
             closestGhostDis = dis
-            closestGhostPos = ghost.getPosition()
 
     for food in foodList:
         dis = manhattanDistance(newPos, food)
         if dis < closestFoodDis:
             closestFoodDis = dis
-            closestFoodPos = food
         
     if newCapsules:
         for caps in newCapsules:
             dis = manhattanDistance(newPos, caps)
             if dis < closestCapDis:
                 closestCapsule = dis
-                closestCapPos = caps
     else:
         closestCapsule = 0
 
-    # capsuleghostDis = manhattanDistance(closestGhost, closestCapPos) * closestCapsule
     if closestCapsule:
         closest_capsule = -2 / closestCapsule
     else:
