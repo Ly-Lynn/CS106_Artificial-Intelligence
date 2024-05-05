@@ -263,7 +263,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             beta = float('inf')
 
             for action in state.getLegalActions(0):
-                value = max(value,minValue(state.generateSuccessor(0, action), 1, 1))
+                # value = max(value,minValue(state.generateSuccessor(0, action), 1, 1))
                 succ  = minValue(state.generateSuccessor(0, action), 1, 1, alpha, beta) 
                 value.append(succ)
                 if bestValue is None:

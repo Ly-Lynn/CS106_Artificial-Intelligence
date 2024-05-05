@@ -1,1 +1,0 @@
-python .\pacman.py -l contestClassic -p MinimaxAgent -a depth=3,evalFn=betterEvaluationFunction2 -s 22520766
